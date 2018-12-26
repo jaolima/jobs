@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -69,6 +72,21 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'username' => $data['username'],
+
         ]);
     }
+
+    // A função store importa o nosso repositório de imagens ImageRepository,
+    public function store(Request $request, ImageRepository $repo)
+    {
+        $product = User::create($request->except('primaryImage'));
+        print_r($product);die;
+        if ($request->hasFile('primaryImage')) {
+            $product->path_image = $repo->saveImage($request->primaryImage, $product->id, 'products', 250);
+        }
+
+    }
 }
+
+
+

@@ -11,6 +11,17 @@
 |
 */
 
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::resource('jobs','JobsController');
+
+    Route::get('usuario', function () {
+        return view('home');
+    });
+
+});
+
+
 Route::get('/', function () {
     return view('welcome');
 });
